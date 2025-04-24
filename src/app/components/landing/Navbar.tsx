@@ -17,9 +17,9 @@ export const Navbar = () => {
         { href: "#features", label: "Features" },
         { href: "#validation-process", label: "Validation" },
         { href: "#rewards-system", label: "Rewards" },
-        { href: "#testimonials", label: "Testimonials" },
-        { href: "#community", label: "Community" },
-        { href: "#faq", label: "FAQ" },
+        // { href: "#testimonials", label: "Testimonials" },
+        // { href: "#community", label: "Community" },
+        // { href: "#faq", label: "FAQ" },
     ];
 
 
