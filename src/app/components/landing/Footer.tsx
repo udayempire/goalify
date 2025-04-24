@@ -232,14 +232,7 @@ export const Footer = () => (
 
       {/* Attribution */}
       <div className="mt-8 text-center text-xs text-gray-500">
-        Images by{" "}
-        <a
-          href="https://unsplash.com/@williamdaigneault"
-          className="text-gray-400 hover:text-white"
-        >
-          William Daigneault
-        </a>{" "}
-        on Unsplash
+        Made within UECORPS
       </div>
     </div>
   </footer>

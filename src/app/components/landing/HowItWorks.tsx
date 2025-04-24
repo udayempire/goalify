@@ -90,9 +90,6 @@ export const HowitWorks = () => {
                 ).src = `https://placehold.co/1080x720`;
               }}
             />
-            <div className="absolute bottom-4 left-4 bg-neutral-800/80 backdrop-blur-sm px-4 py-2 rounded text-sm z-20">
-              Photo by Hunters Race
-            </div>
           </div>
 
           {/* Left Steps */}
@@ -147,9 +144,6 @@ export const HowitWorks = () => {
                 ).src = `https://placehold.co/1080x720`;
               }}
             />
-            <div className="absolute bottom-4 left-4 bg-neutral-800/80 backdrop-blur-sm px-4 py-2 rounded text-sm z-20">
-              Photo by Ben Rosett
-            </div>
           </div>
         </div>
 

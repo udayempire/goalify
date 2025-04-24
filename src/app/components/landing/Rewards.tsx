@@ -1,7 +1,5 @@
 "use client";
-
 import React, { useState, useEffect } from "react";
-import Image from "next/image";
 
 interface Step {
   id: number;
@@ -82,7 +80,7 @@ const summaryCards: Card[] = [
   },
 ];
 
-export const RewardsSystem= () => {
+export const RewardsSystem = () => {
   // Calculator state
   const [stake, setStake] = useState(100);
   const [groupSize, setGroupSize] = useState(10);
@@ -120,37 +118,10 @@ export const RewardsSystem= () => {
           </p>
         </div>
 
-        {/* Achiever vs Image */}
-        <div className="grid md:grid-cols-2 gap-12 items-center mb-20">
-          {/* Image + badges */}
-          <div className="relative order-2 md:order-1">
-            <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-xl p-3 shadow-2xl">
-              <Image
-                src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w2MzQ2fDB8MXxzZWFyY2h8MXx8cmV3YXJkcy1zeXN0ZW0lMjBwcm9mZXNzaW9uYWx8ZW58MHwwfHx8MTc0MzUyNjQxM3ww&ixlib=rb-4.0.3&q=80&w=1080"
-                alt="Person climbing stairs symbolizing achievement and rewards"
-                width={1080}
-                height={720}
-                className="w-full h-auto rounded-lg"
-                onError={(e) => {
-                  (e.currentTarget as HTMLImageElement).src =
-                    "https://placehold.co/1080x720";
-                }}
-              />
-              <div className="absolute bottom-6 left-6 bg-neutral-900/80 backdrop-blur-sm px-4 py-2 rounded text-sm">
-                Photo by Hunters Race
-              </div>
-            </div>
-            <div className="absolute -top-4 -right-4 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg transform rotate-3">
-              <div className="font-bold">30% Extra Earnings</div>
-            </div>
-            <div className="absolute -bottom-4 -left-4 bg-blue-600 text-white px-6 py-3 rounded-lg shadow-lg transform -rotate-3">
-              <div className="font-bold">100% Stake Return</div>
-            </div>
-          </div>
-
-          {/* Achiever steps */}
-          <div className="order-1 md:order-2">
-            <div className="bg-gradient-to-br from-blue-900/20 to-purple-900/20 p-8 rounded-xl border border-gray-700">
+        {/* Achiever steps */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-stretch mb-20">
+          <div className="h-full">
+            <div className="h-full bg-gradient-to-br from-blue-900/20 to-purple-900/20 p-8 rounded-xl border border-gray-700">
               <h3 className="text-2xl font-bold mb-6">Goal Achiever Rewards</h3>
               <p className="text-gray-300 mb-6">
                 When you complete your goals, you don&apos;t just get your stake
@@ -173,13 +144,9 @@ export const RewardsSystem= () => {
               </ul>
             </div>
           </div>
-        </div>
 
-        {/* Validator vs Image */}
-        <div className="grid md:grid-cols-2 gap-12 items-center mb-20">
-          {/* Validator steps */}
-          <div>
-            <div className="bg-gradient-to-br from-blue-900/20 to-purple-900/20 p-8 rounded-xl border border-gray-700">
+          <div className="h-full">
+            <div className="h-full bg-gradient-to-br from-blue-900/20 to-purple-900/20 p-8 rounded-xl border border-gray-700">
               <h3 className="text-2xl font-bold mb-6">Validator Rewards</h3>
               <p className="text-gray-300 mb-6">
                 Honest validators are essential to our platform and are rewarded
@@ -202,32 +169,10 @@ export const RewardsSystem= () => {
               </ul>
             </div>
           </div>
+        </div>
 
-          {/* Image + badges */}
-          <div className="relative">
-            <div className="bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-xl p-3 shadow-2xl">
-              <Image
-                src="https://images.unsplash.com/photo-1425421669292-0c3da3b8f529?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w2MzQ2fDB8MXxzZWFyY2h8M3x8cmV3YXJkcy1zeXN0ZW0lMjBwcm9mZXNzaW9uYWx8ZW58MHwwfHx8MTc0MzUyNjQxM3ww&ixlib=rb-4.0.3&q=80&w=1080"
-                alt="Professional man in suit symbolizing success in validation system"
-                width={1080}
-                height={720}
-                className="w-full h-auto rounded-lg"
-                onError={(e) => {
-                  (e.currentTarget as HTMLImageElement).src =
-                    "https://placehold.co/1080x720";
-                }}
-              />
-              <div className="absolute bottom-6 left-6 bg-neutral-900/80 backdrop-blur-sm px-4 py-2 rounded text-sm">
-                Photo by Ben Rosett
-              </div>
-            </div>
-            <div className="absolute -top-4 -left-4 bg-purple-600 text-white px-6 py-3 rounded-lg shadow-lg transform -rotate-3">
-              <div className="font-bold">Earn While Validating</div>
-            </div>
-            <div className="absolute -bottom-4 -right-4 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg transform rotate-3">
-              <div className="font-bold">Reputation Boosts</div>
-            </div>
-          </div>
+        <div className="grid md:grid-cols-2 gap-12 items-center mb-20">
+          {/* Validator steps */}
         </div>
 
         {/* Summary cards */}
@@ -390,7 +335,6 @@ export const RewardsSystem= () => {
                     </div>
                   </div>
 
- 
                   {/* Total */}
                   <div className="border-t border-gray-600 pt-4 mt-6">
                     <div className="flex justify-between items-center">

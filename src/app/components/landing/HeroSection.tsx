@@ -135,25 +135,8 @@ export const Herosection = () => {
           </div>
 
           {/* Stats Section */}
-          <div className="mt-16 flex justify-center">
-            <div className="flex space-x-8 text-sm text-center">
-              <div>
-                <div className="text-3xl font-bold text-blue-400 mb-1">
-                  10K+
-                </div>
-                <div className="text-gray-400">Active Users</div>
-              </div>
-              <div>
-                <div className="text-3xl font-bold text-blue-400 mb-1">85%</div>
-                <div className="text-gray-400">Success Rate</div>
-              </div>
-              <div>
-                <div className="text-3xl font-bold text-blue-400 mb-1">
-                  $2M+
-                </div>
-                <div className="text-gray-400">Total Staked</div>
-              </div>
-            </div>
+          <div className="mt-16 flex justify-center text-xl font-semibold text-zinc-200">
+            You Achieve your goals and we will reward you !
           </div>
         </div>
 
