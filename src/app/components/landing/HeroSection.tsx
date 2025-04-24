@@ -2,9 +2,9 @@ import Image from "next/image";
 export const Herosection = () => {
   return (
     <div>
-      <section>
+      <section >
         {/* Background Image */}
-        <div className="absolute inset-0 opacity-40">
+        <div className="absolute inset-0 opacity-40 ">
           <Image
             src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w2MzQ2fDB8MXxzZWFyY2h8MXx8bWFpbiUyMHZpZXclMjBmZWF0dXJlZCUyMGltYWdlJTIwcHJvZmVzc2lvbmFsJTIwaGlnaCUyMHF1YWxpdHklMjBmZWF0dXJlZHxlbnwwfDB8fHwxNzQzMTU5NDUyfDA&ixlib=rb-4.0.3&q=80&w=1080"
             alt="Person standing near stairs, representing achievement"
@@ -15,12 +15,11 @@ export const Herosection = () => {
         </div>
         {/* Overlay */}
         <div className="absolute inset-0 bg-gradient-to-r from-blue-900/90 to-purple-900/90" />
-
-        <div className="container mx-auto px-6 relative z-10">
+        <div className="container mx-auto px-6 relative z-10 ">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             {/* Text Content */}
-            <div className="md:pr-12 space-y-8">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+            <div className="md:pr-12 space-y-8 ">
+              <h1 className="text-4xl text-zinc-200 md:text-5xl lg:text-6xl font-bold leading-tight">
                 <span className="block mb-2">Stake Your Goals.</span>
                 <span className="block mb-2">Earn Your Rewards.</span>
                 <span className="block text-blue-400">Validate Fairly.</span>
@@ -135,7 +134,7 @@ export const Herosection = () => {
           </div>
 
           {/* Stats Section */}
-          <div className="mt-16 flex justify-center text-xl font-semibold text-zinc-200">
+          <div className="mt-16 flex justify-center text-center py-4 text-xl font-semibold text-zinc-200">
             You Achieve your goals and we will reward you !
           </div>
         </div>

@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <>
       <Navbar />
-      <main className="pt-40"> {/* Add padding to offset the fixed navbar */}
+      <main className="pt-28 md:pt-40 bg-blue-950"> {/* Add padding to offset the fixed navbar */}
         <section id="HeroSection"><Herosection/></section>
         <section id="HowItWorks"><HowitWorks/></section>
         <section id="Features"><Features/></section>
