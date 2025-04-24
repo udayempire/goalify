@@ -1,4 +1,5 @@
 import { Features } from "./components/landing/Features";
+import { Footer } from "./components/landing/Footer";
 import { Herosection } from "./components/landing/HeroSection";
 import { HowitWorks } from "./components/landing/HowItWorks";
 import { Navbar } from "./components/landing/Navbar";
@@ -15,6 +16,7 @@ export default function Home() {
         <section id="Features"><Features/></section>
         <section id="Validation"><ValidationProcess/></section>
         <section id="Rewards"><RewardsSystem/></section>
+        <section id="Footer"><Footer/></section>
       </main>
     </>
   );
