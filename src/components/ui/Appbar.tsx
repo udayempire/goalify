@@ -1,4 +1,7 @@
 "use client";
+
+import { ConnectButton } from "./ConnectWallet";
+
 export const Appbar = () => {
   return (
     <nav className="bg-gradient-to-r from-gray-950 to-black ">
@@ -10,7 +13,7 @@ export const Appbar = () => {
           </div>
           {/* Right side - Connect Wallet button */}
           <div className="flex items-center">
-            <button
+            {/* <button
               className="bg-gradient-to-r from-[#9945FF] via-[#8752F3] to-[#14F195] hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors"
               onClick={() => {
                 // Add wallet connection logic here
@@ -18,7 +21,8 @@ export const Appbar = () => {
               }}
             >
               Connect Wallet
-            </button>
+            </button> */}
+            <ConnectButton/>
           </div>
         </div>
       </div>
