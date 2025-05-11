@@ -1,7 +1,8 @@
-export default function dashboard() {
-  return (
+import { Appbar } from "@/app/components/ui/Appbar"
+export default function Dashboard() {
+  return(
     <div>
-        dashboard
+      <Appbar/>
     </div>
-  );
+  )
 }
