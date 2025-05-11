@@ -1,5 +1,5 @@
-import { Sidebar } from "@/components/ui/sidebar";
-import { Appbar } from "@/components/ui/Appbar"
+import { Sidebar } from "@/components/ui/Sidebar";
+import { Appbar } from "@/components/ui/Appbar";
 
 export default function MainLayout({
     children,
