@@ -1,10 +1,10 @@
-import { Features } from "./components/landing/Features";
-import { Footer } from "./components/landing/Footer";
-import { Herosection } from "./components/landing/HeroSection";
-import { HowitWorks } from "./components/landing/HowItWorks";
-import { Navbar } from "./components/landing/Navbar";
-import { RewardsSystem } from "./components/landing/Rewards";
-import { ValidationProcess } from "./components/landing/Validation";
+import { Features } from "../components/ui/landing/Features";
+import { Footer } from "../components/ui/landing/Footer";
+import { Herosection } from "../components/ui/landing/HeroSection";
+import { HowitWorks } from "../components/ui/landing/HowItWorks";
+import { Navbar } from "../components/ui/landing/Navbar";
+import { RewardsSystem } from "../components/ui/landing/Rewards";
+import { ValidationProcess } from "../components/ui/landing/Validation";
 
 export default function Home() {
   return (
