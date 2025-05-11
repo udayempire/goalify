@@ -20,13 +20,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/favicon_io/favicon.ico" sizes="any" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistVF.className} antialiased`}
-
       >
-        <WalletConnectionProvider>
-          {children}
-        </WalletConnectionProvider>
+        <WalletConnectionProvider>{children}</WalletConnectionProvider>
       </body>
     </html>
   );

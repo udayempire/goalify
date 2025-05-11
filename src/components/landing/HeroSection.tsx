@@ -33,7 +33,7 @@ export const Herosection = () => {
 
               <div className="flex flex-col sm:flex-row gap-4">
                 <a
-                  href="#"
+                  href="http://localhost:3000/goal-groups"
                   className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-8 rounded-full transition-colors duration-300 text-center"
                 >
                   Start Staking
