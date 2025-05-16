@@ -2,7 +2,7 @@
 
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
-import { useMemo } from 'react';
+import { useMemo, useCallback, useEffect } from 'react';
 
 export const ConnectButton = () => {
   const { connected, disconnect, publicKey } = useWallet();
@@ -14,13 +14,41 @@ export const ConnectButton = () => {
     return `${base58.slice(0, 4)}...${base58.slice(-4)}`;
   }, [publicKey]);
 
-  const handleClick = () => {
+  const createUser = useCallback(async (walletAddress: string) => {
+    try {
+      const response = await fetch('/api/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: shortAddress, // Using shortened address as username
+          walletAddress,
+        }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        console.error('Failed to create user:', data);
+      }
+    } catch (error) {
+      console.error('Error creating user:', error);
+    }
+  }, [shortAddress]);
+
+  const handleClick = async () => {
     if (connected) {
       disconnect();
     } else {
       setVisible(true);
     }
   };
+
+  // Watch for wallet connection
+  useEffect(() => {
+    if (connected && publicKey) {
+      createUser(publicKey.toBase58());
+    }
+  }, [connected, publicKey, createUser]);
 
   return (
     <button
