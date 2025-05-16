@@ -30,7 +30,7 @@ export const Navbar = () => {
                     {/* Logo */}
                     <div className="text-xl font-bold">
                         <Link href="/" className="text-white hover:text-blue-400 transition-colors duration-300">
-                            GoalStaker
+                            Goalify
                         </Link>
                     </div>
 

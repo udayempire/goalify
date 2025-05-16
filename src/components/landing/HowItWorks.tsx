@@ -65,7 +65,7 @@ export const HowitWorks = () => {
         {/* Header */}
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            How GoalStaker Works
+            How Goalify Works
           </h2>
           <p className="text-lg text-gray-300 max-w-2xl mx-auto">
             Set goals, stake funds, and earn rewards in a decentralized platform
@@ -73,77 +73,46 @@ export const HowitWorks = () => {
           </p>
         </div>
 
-        {/* Top Grid */}
-        <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
-          {/* Left Image */}
-          <div className="relative">
+        {/* Two Cards Grid */}
+        <div className="grid md:grid-cols-2 gap-8">
+          {/* First Card */}
+          <div className="bg-neutral-700/30 rounded-xl p-8 relative overflow-hidden">
             <div className="bg-blue-600/10 rounded-full absolute -inset-4 blur-xl opacity-30" />
-            <Image
-              src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w2MzQ2fDB8MXxzZWFyY2h8MXx8aG93LWl0LXdvcmtzJTIwcHJvZmVzc2lvbmFsfGVufDB8MHx8fDE3NDMxNjYzNjN8MA&ixlib=rb-4.0.3&q=80&w=1080"
-              alt="Person climbing stairs toward success"
-              width={1080}
-              height={720}
-              className="w-full h-auto rounded-xl shadow-2xl relative z-10"
-              onError={(e) => {
-                (
-                  e.currentTarget as HTMLImageElement
-                ).src = `https://placehold.co/1080x720`;
-              }}
-            />
+            <div className="space-y-8 relative z-10">
+              {stepsLeft.map((step) => (
+                <div key={step.id} className="flex gap-4 items-start">
+                  <div
+                    className={`flex-shrink-0 bg-${step.color}-600 rounded-full w-12 h-12 flex items-center justify-center font-bold text-white text-lg`}
+                  >
+                    {step.id}
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold mb-2">{step.title}</h3>
+                    <p className="text-gray-300 leading-relaxed">{step.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* Left Steps */}
-          <div className="space-y-8">
-            {stepsLeft.map((step) => (
-              <div key={step.id} className="flex gap-4">
-                <div
-                  className={`flex-shrink-0 bg-${step.color}-600 rounded-full w-10 h-10 flex items-center justify-center font-bold text-white`}
-                >
-                  {step.id}
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold mb-2">{step.title}</h3>
-                  <p className="text-gray-300">{step.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Bottom Grid */}
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          {/* Right Steps */}
-          <div className="space-y-8 order-2 md:order-1">
-            {stepsRight.map((step) => (
-              <div key={step.id} className="flex gap-4">
-                <div
-                  className={`flex-shrink-0 bg-${step.color}-600 rounded-full w-10 h-10 flex items-center justify-center font-bold text-white`}
-                >
-                  {step.id}
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold mb-2">{step.title}</h3>
-                  <p className="text-gray-300">{step.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Right Image */}
-          <div className="relative order-1 md:order-2">
+          {/* Second Card */}
+          <div className="bg-neutral-700/30 rounded-xl p-8 relative overflow-hidden">
             <div className="bg-purple-600/10 rounded-full absolute -inset-4 blur-xl opacity-30" />
-            <Image
-              src="https://images.unsplash.com/photo-1425421669292-0c3da3b8f529?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w2MzQ2fDB8MXxzZWFyY2h8M3x8aG93LWl0LXdvcmtzJTIwcHJvZmVzc2lvbmFsfGVufDB8MHx8fDE3NDMxNjYzNjN8MA&ixlib=rb-4.0.3&q=80&w=1080"
-              alt="Professional man loosening tie, representing success and accomplishment"
-              width={1080}
-              height={720}
-              className="w-full h-auto rounded-xl shadow-2xl relative z-10"
-              onError={(e) => {
-                (
-                  e.currentTarget as HTMLImageElement
-                ).src = `https://placehold.co/1080x720`;
-              }}
-            />
+            <div className="space-y-8 relative z-10">
+              {stepsRight.map((step) => (
+                <div key={step.id} className="flex gap-4 items-start">
+                  <div
+                    className={`flex-shrink-0 bg-${step.color}-600 rounded-full w-12 h-12 flex items-center justify-center font-bold text-white text-lg`}
+                  >
+                    {step.id}
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold mb-2">{step.title}</h3>
+                    <p className="text-gray-300 leading-relaxed">{step.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -182,7 +151,7 @@ export const HowitWorks = () => {
                 {
                   iconColor: "purple-600",
                   title: "Random Validation",
-                  text: "Validators review evidence independently without seeing others’ votes",
+                  text: "Validators review evidence independently without seeing others' votes",
                   svgPath:
                     "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z",
                 },

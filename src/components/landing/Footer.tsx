@@ -37,7 +37,7 @@ export const Footer = () => (
         {/* Brand & Social */}
         <div>
           <Link href="/" className="text-2xl font-bold mb-6 inline-block">
-            GoalStaker
+            Goalify
           </Link>
           <p className="text-gray-400 mb-6">
             Achieve your goals with financial incentives and community
@@ -206,7 +206,7 @@ export const Footer = () => (
       {/* Bottom Bar */}
       <div className="border-t border-neutral-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
         <div className="text-gray-400 text-sm mb-4 md:mb-0">
-          © 2023 GoalStaker. All rights reserved.
+          © 2025 GoalStaker. All rights reserved.
         </div>
         <div className="flex space-x-6">
           <Link

@@ -39,10 +39,10 @@ export const Herosection = () => {
                   Start Staking
                 </a>
                 <a
-                  href="#how-it-works"
+                  href="https://x.com/Goalify_"
                   className="bg-transparent border border-white hover:bg-white/10 text-white font-medium py-3 px-8 rounded-full transition-colors duration-300 text-center"
                 >
-                  Learn More
+                  Follow on X
                 </a>
               </div>
             </div>
@@ -52,7 +52,7 @@ export const Herosection = () => {
               <div className="bg-neutral-800/80 backdrop-blur-sm p-6 rounded-xl border border-neutral-700 shadow-xl">
                 <div className="flex justify-between items-center mb-6">
                   <div>
-                    <h3 className="text-xl font-bold">Goal Dashboard</h3>
+                    <h3 className="text-xl font-bold text-zinc-200">Goal Dashboard</h3>
                     <p className="text-gray-400">Track your progress</p>
                   </div>
                   <div className="bg-blue-600 text-white p-2 rounded-lg text-sm font-bold">
@@ -61,9 +61,9 @@ export const Herosection = () => {
                 </div>
 
                 {/* Goal List */}
-                <div className="space-y-4 mb-6">
+                <div className="space-y-4 mb-6 text-zinc-200">
                   {/* Goal Item 1 */}
-                  <div className="bg-neutral-700/50 p-4 rounded-lg">
+                  <div className="bg-neutral-700/50 p-4 rounded-lg text-zinc-200">
                     <div className="flex justify-between mb-2">
                       <span className="font-medium">Daily Workout</span>
                       <span className="text-green-400">$120 Staked</span>

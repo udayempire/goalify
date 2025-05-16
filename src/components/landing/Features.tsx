@@ -33,7 +33,7 @@ const featuresGroupB: FeatureItem[] = [
   {
     title: "Random Validators",
     description:
-      "Six impartial validators review your goal completion evidence independently.",
+      "Random validators inside your group review your goal completion evidence independently.",
     iconColor: "purple-600",
   },
   {
@@ -66,7 +66,7 @@ const featuresGroupC: FeatureItem[] = [
   {
     title: "Threshold Approval",
     description:
-      "4/6 majority requirement ensures fair and accurate validation.",
+      "Majority requirement ensures fair and accurate validation.",
     iconColor: "green-600",
   },
 ];
