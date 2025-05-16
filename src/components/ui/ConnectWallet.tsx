@@ -16,13 +16,23 @@ export const ConnectButton = () => {
 
   const createUser = useCallback(async (walletAddress: string) => {
     try {
+      //Check if user exists
+      const checkRes = await fetch(`/api/users?walletAddress=${walletAddress}`);
+      const checkData = await checkRes.json();
+      if (checkData.success && checkData.user) {
+        // User exists, treat as login
+        console.log('User exists, logging in:', checkData.user);
+        return;
+      }
+
+      //If not, create new user
       const response = await fetch('/api/users', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          username: shortAddress, // Using shortened address as username
+          username: shortAddress,
           walletAddress,
         }),
       });
