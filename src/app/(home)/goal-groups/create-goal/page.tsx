@@ -1,32 +1,80 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { DatePicker } from '@/components/ui/datePicker';
+
+interface GoalFormData {
+  title: string;
+  description: string;
+  rules: string[];
+  stakeAmount: string;
+  registrationDate?: Date;
+  endDate?: Date;
+}
 
 export default function CreateGoal() {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [rules, setRules] = useState("");
-  const [stakeAmount, setStakeAmount] = useState("");
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [rules, setRules] = useState('');
+  const [stakeAmount, setStakeAmount] = useState('');
+  const [registrationDate, setRegistrationDate] = useState<Date>();
+  const [endDate, setEndDate] = useState<Date>();
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [savedData, setSavedData] = useState<GoalFormData | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({
+    
+    const formData = {
       title,
       description,
       rules: rules
-        .split("\n")
-        .map((rule) => rule.trim())
-        .filter((rule) => rule !== ""),
+        .split('\n')
+        .map((r) => r.trim())
+        .filter((r) => r),
       stakeAmount,
-    });
+      registrationDate,
+      endDate,
+    };
+    
+    console.log(formData);
+    
+    // Save the data to state
+    setSavedData(formData);
+    setIsSubmitted(true);
+    
+    // Optional: Reset form after submission
+    // resetForm();
+  };
+  
+  const resetForm = () => {
+    setTitle('');
+    setDescription('');
+    setRules('');
+    setStakeAmount('');
+    setRegistrationDate(undefined);
+    setEndDate(undefined);
   };
 
   return (
-    <div className="container mx-auto py-8">
+    <div className="container mx-auto">
+      {isSubmitted && savedData && (
+        <div className="mb-6 p-4 bg-green-800/80 text-white rounded-md">
+          <h3 className="font-bold mb-2">Goal Created Successfully!</h3>
+          <p>Your goal &quot;{savedData.title}&quot; has been saved.</p>
+          <Button 
+            onClick={() => setIsSubmitted(false)} 
+            className="mt-2 bg-green-700 hover:bg-green-600"
+          >
+            Create Another Goal
+          </Button>
+        </div>
+      )}
+      
       <Card className="bg-neutral-800/80 backdrop-blur-sm border border-neutral-700 shadow-xl text-zinc-200">
         <CardHeader>
           <CardTitle className="text-center text-2xl font-bold">
@@ -37,7 +85,7 @@ export default function CreateGoal() {
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Title */}
             <div>
-              <label htmlFor="title" className="block font-medium mb-1 text-lg">
+              <label htmlFor="title" className="block text-lg font-medium mb-1">
                 Title
               </label>
               <Input
@@ -52,10 +100,7 @@ export default function CreateGoal() {
 
             {/* Description */}
             <div>
-              <label
-                htmlFor="description"
-                className="block  font-medium mb-1 text-lg"
-              >
+              <label htmlFor="description" className="block text-lg font-medium mb-1">
                 Description
               </label>
               <Textarea
@@ -70,7 +115,7 @@ export default function CreateGoal() {
 
             {/* Rules */}
             <div>
-              <label htmlFor="rules" className="block text-lg font-medium mb-1 ">
+              <label htmlFor="rules" className="block text-lg font-medium mb-1">
                 Rules (one per line)
               </label>
               <Textarea
@@ -85,11 +130,8 @@ export default function CreateGoal() {
 
             {/* Stake Amount */}
             <div>
-              <label
-                htmlFor="stakeAmount"
-                className="block font-medium mb-1 text-lg"
-              >
-                Stake Amount
+              <label htmlFor="stakeAmount" className="block text-lg font-medium mb-1">
+                Stake Amount (Per Person)
               </label>
               <Input
                 id="stakeAmount"
@@ -98,40 +140,40 @@ export default function CreateGoal() {
                 step="0.01"
                 value={stakeAmount}
                 onChange={(e) => setStakeAmount(e.target.value)}
-                placeholder="Enter stake amount"
+                placeholder="Enter stake amount in SOL"
                 required
                 className="border-neutral-700 bg-neutral-900/50"
               />
             </div>
 
-            {/* Dates (placeholder for future DatePicker) */}
+            {/* Dates */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block font-medium mb-1 text-lg">
+                <label className="block text-lg font-medium mb-1">
                   Registration Date
                 </label>
-                {/* <DatePicker
+                <DatePicker
                   date={registrationDate}
-                  setDate={setRegistrationDate}
-                  className="w-full"
-                /> */}
+                  onDateChange={setRegistrationDate}
+                  placeholder="Select registration date"
+                />
               </div>
               <div>
-                <label className="block font-medium mb-1 text-lg">
+                <label className="block text-lg font-medium mb-1">
                   End Date
                 </label>
-                {/* <DatePicker
+                <DatePicker
                   date={endDate}
-                  setDate={setEndDate}
-                  className="w-full"
-                /> */}
+                  onDateChange={setEndDate}
+                  placeholder="Select end date"
+                />
               </div>
             </div>
 
             {/* Submit */}
             <Button
               type="submit"
-              className="w-full border-2 border-neutral-800 bg-neutral-400 hover:bg-neutral-500 text-zinc-800 font-bold text-md"
+              className="w-full border-neutral-700 bg-blue-800 hover:bg-blue-700 text-zinc-200 font-semibold text-md"
             >
               Create Goal
             </Button>
