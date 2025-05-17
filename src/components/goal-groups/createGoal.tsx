@@ -65,9 +65,9 @@ export default function CreateGoalModal({ isOpen, onClose }: CreateGoalProps) {
       if (!res.ok) throw new Error(data.error || 'Unknown error');
       console.log('Pinned goal to IPFS:', data);
       onClose();
-    } catch (err: any) {
+    } catch (err) {
       console.error('Failed to create goal:', err);
-      alert('Failed to create goal: ' + err.message);
+      alert('Failed to create goal: ' + err);
     } finally {
       setSubmitting(false);
     }

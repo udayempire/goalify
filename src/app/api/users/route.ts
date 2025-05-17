@@ -47,7 +47,9 @@ export async function POST(request: NextRequest) {
       createdAt: new Date().toISOString(),
     } as const;
 
-    const { ipfsHash, ipfsUrl } = await pinJSONToIPFS(userPayload);
+    const pinataResponse = await pinJSONToIPFS(userPayload);
+    const ipfsHash = pinataResponse.IpfsHash;
+    const ipfsUrl = `https://gateway.pinata.cloud/ipfs/${ipfsHash}`;
 
     // Save to in-memory index
     userIndex[walletAddress] = { username, walletAddress, ipfsHash, ipfsUrl };
@@ -58,10 +60,10 @@ export async function POST(request: NextRequest) {
       ipfsUrl,
       pinnedData: userPayload,
     }, { status: 201 });
-  } catch (error: any) {
+  } catch (error) {
     console.error('IPFS Pinning Error:', error);
     return NextResponse.json(
-      { success: false, error: 'Failed to pin data to IPFS', message: error.message },
+      { success: false, error: 'Failed to pin data to IPFS', message: error },
       { status: 500 }
     );
   }
