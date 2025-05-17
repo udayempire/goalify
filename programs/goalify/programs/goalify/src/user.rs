@@ -1,4 +1,9 @@
 use anchor_lang::prelude::*;
+use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
+use near_sdk::collections::{LookupMap, UnorderedMap, UnorderedSet};
+use near_sdk::{env, near_bindgen, AccountId, Balance, Promise, PanicOnDefault};
+use near_sdk::serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 
 pub fn initialize_user(ctx: Context<InitializeUser>, username: String) -> Result<()> {
     let user = &mut ctx.accounts.user;
@@ -57,132 +62,247 @@ pub enum UserError {
     #[msg("Reputation overflow")] Overflow,
 }
 
-// File: programs/goalifier/src/goal.rs
-use anchor_lang::prelude::*;
-use anchor_spl::token::{self, Transfer};
-
-pub fn initialize_goal(
-    ctx: Context<InitializeGoal>,
-    title: String,
-    description: String,
-    stake_amount: u64,
-    registration_date: i64,
-    end_date: i64,
-) -> Result<()> {
-    let goal = &mut ctx.accounts.goal;
-    goal.creator = *ctx.accounts.creator.key;
-    goal.title = title;
-    goal.description = description;
-    goal.stake_amount = stake_amount;
-    goal.registration_date = registration_date;
-    goal.end_date = end_date;
-    goal.status = GoalStatus::ToBeStarted;
-    goal.participants = vec![*ctx.accounts.creator.key];
-    Ok(())
-}
-
-pub fn join_goal(ctx: Context<JoinGoal>) -> Result<()> {
-    let goal = &mut ctx.accounts.goal;
-    let participant = ctx.accounts.participant.key();
-    require!(!goal.participants.contains(&participant), GoalError::AlreadyJoined);
-
-    let cpi_accounts = Transfer {
-        from: ctx.accounts.from_token_account.to_account_info(),
-        to: ctx.accounts.escrow_token_account.to_account_info(),
-        authority: ctx.accounts.participant.to_account_info(),
-    };
-    token::transfer(CpiContext::new(ctx.accounts.token_program.to_account_info(), cpi_accounts), goal.stake_amount)?;
-    goal.participants.push(participant);
-    Ok(())
-}
-
-#[derive(Accounts)]
-pub struct InitializeGoal<'info> {
-    #[account(init, payer = creator, space = 8 + /* calculate size */, seeds = [b"goal", creator.key().as_ref()], bump)]
-    pub goal: Account<'info, GoalAccount>,
-    #[account(mut)] pub creator: Signer<'info>,
-    pub system_program: Program<'info, System>,
-}
-
-#[derive(Accounts)]
-pub struct JoinGoal<'info> {
-    #[account(mut, seeds = [b"goal", goal.creator.as_ref()], bump)]
-    pub goal: Account<'info, GoalAccount>,
-    #[account(mut)] pub participant: Signer<'info>,
-    #[account(mut)] pub from_token_account: Account<'info, TokenAccount>,
-    #[account(mut, seeds = [b"escrow", goal.key().as_ref()], bump)] pub escrow_token_account: Account<'info, TokenAccount>,
-    pub token_program: Program<'info, Token>,
-}
-
-#[account]
-pub struct GoalAccount {
-    pub creator: Pubkey,
-    pub title: String,
-    pub description: String,
-    pub stake_amount: u64,
-    pub registration_date: i64,
-    pub end_date: i64,
-    pub status: GoalStatus,
-    pub participants: Vec<Pubkey>,
-}
-
-#[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq, Eq)]
+#[derive(BorshDeserialize, BorshSerialize, Serialize, Deserialize, Clone, Debug, PartialEq)]
+#[serde(crate = "near_sdk::serde")]
 pub enum GoalStatus {
-    ToBeStarted,
-    Active,
-    Completed,
-    Cancelled,
-}
-
-#[error_code]
-pub enum GoalError {
-    #[msg("User already joined this goal")]
-    AlreadyJoined,
-}
-
-// File: programs/goalifier/src/participation.rs
-use anchor_lang::prelude::*;
-
-pub fn submit_proof(ctx: Context<SubmitProof>, proof_cid: String) -> Result<()> {
-    let participation = &mut ctx.accounts.participation;
-    participation.proof_cid = proof_cid;
-    participation.status = ParticipationStatus::ProofSubmitted;
-    Ok(())
-}
-
-pub fn validate_proof(ctx: Context<ValidateProof>, approved: bool) -> Result<()> {
-    let participation = &mut ctx.accounts.participation;
-    participation.status = if approved { ParticipationStatus::Completed } else { ParticipationStatus::Failed };
-    Ok(())
-}
-
-#[derive(Accounts)]
-pub struct SubmitProof<'info> {
-    #[account(init, payer = user, space = 8 + /* size */, seeds = [b"participation", user.key().as_ref(), goal.key().as_ref()], bump)]
-    pub participation: Account<'info, ParticipationAccount>,
-    #[account(mut)] pub user: Signer<'info>,
-    #[account(mut)] pub goal: Account<'info, GoalAccount>,
-    pub system_program: Program<'info, System>,
-}
-
-#[derive(Accounts)]
-pub struct ValidateProof<'info> {
-    #[account(mut, seeds = [b"participation", participation.user.as_ref(), participation.goal.as_ref()], bump)]
-    pub participation: Account<'info, ParticipationAccount>,
-    pub validator: Signer<'info>,
-}
-
-#[account]
-pub struct ParticipationAccount {
-    pub user: Pubkey,
-    pub goal: Pubkey,
-    pub proof_cid: String,
-    pub status: ParticipationStatus,
-}
-
-#[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq, Eq)]
-pub enum ParticipationStatus {
-    ProofSubmitted,
+    InProgress,
     Completed,
     Failed,
+    Validated,
+}
+
+#[derive(BorshDeserialize, BorshSerialize, Serialize, Deserialize, Clone, Debug)]
+#[serde(crate = "near_sdk::serde")]
+pub struct Goal {
+    description: String,
+    deadline: u64, // timestamp
+    stake_amount: Balance,
+    status: GoalStatus,
+    validators: Vec<AccountId>,
+    validations_received: u32,
+    validations_required: u32,
+}
+
+#[derive(BorshDeserialize, BorshSerialize, Serialize, Deserialize, Clone, Debug)]
+#[serde(crate = "near_sdk::serde")]
+pub struct Group {
+    name: String,
+    members: Vec<AccountId>,
+    validators: Vec<AccountId>,
+    active_goals: UnorderedMap<AccountId, Goal>,
+    completed_goals: UnorderedMap<AccountId, Goal>,
+    failed_goals: UnorderedMap<AccountId, Goal>,
+}
+
+#[near_bindgen]
+#[derive(BorshDeserialize, BorshSerialize, PanicOnDefault)]
+pub struct StakingContract {
+    groups: UnorderedMap<String, Group>,
+    user_stakes: LookupMap<AccountId, Balance>,
+    platform_fees: Balance,
+}
+
+#[near_bindgen]
+impl StakingContract {
+    #[init]
+    pub fn new() -> Self {
+        Self {
+            groups: UnorderedMap::new(b"g"),
+            user_stakes: LookupMap::new(b"s"),
+            platform_fees: 0,
+        }
+    }
+
+    pub fn create_group(&mut self, group_name: String) {
+        assert!(!self.groups.get(&group_name).is_some(), "Group already exists");
+        
+        let group = Group {
+            name: group_name.clone(),
+            members: vec![env::predecessor_account_id()],
+            validators: vec![],
+            active_goals: UnorderedMap::new(format!("ag_{}", group_name).as_bytes()),
+            completed_goals: UnorderedMap::new(format!("cg_{}", group_name).as_bytes()),
+            failed_goals: UnorderedMap::new(format!("fg_{}", group_name).as_bytes()),
+        };
+        
+        self.groups.insert(&group_name, &group);
+    }
+
+    pub fn join_group(&mut self, group_name: String) {
+        let mut group = self.groups.get(&group_name).expect("Group not found");
+        let account_id = env::predecessor_account_id();
+        
+        assert!(!group.members.contains(&account_id), "Already a member");
+        
+        group.members.push(account_id);
+        self.groups.insert(&group_name, &group);
+    }
+
+    pub fn become_validator(&mut self, group_name: String) {
+        let mut group = self.groups.get(&group_name).expect("Group not found");
+        let account_id = env::predecessor_account_id();
+        
+        assert!(group.members.contains(&account_id), "Not a member of this group");
+        assert!(!group.validators.contains(&account_id), "Already a validator");
+        
+        group.validators.push(account_id);
+        self.groups.insert(&group_name, &group);
+    }
+
+    #[payable]
+    pub fn create_goal(&mut self, group_name: String, description: String, deadline: u64, validations_required: u32) {
+        let mut group = self.groups.get(&group_name).expect("Group not found");
+        let account_id = env::predecessor_account_id();
+        let stake_amount = env::attached_deposit();
+        
+        assert!(group.members.contains(&account_id), "Not a member of this group");
+        assert!(stake_amount > 0, "Stake amount must be greater than 0");
+        assert!(deadline > env::block_timestamp(), "Deadline must be in the future");
+        assert!(validations_required <= group.validators.len() as u32, "Not enough validators in the group");
+        
+        let goal = Goal {
+            description,
+            deadline,
+            stake_amount,
+            status: GoalStatus::InProgress,
+            validators: vec![],
+            validations_received: 0,
+            validations_required,
+        };
+        
+        group.active_goals.insert(&account_id, &goal);
+        self.groups.insert(&group_name, &group);
+        
+        let current_stake = self.user_stakes.get(&account_id).unwrap_or(0);
+        self.user_stakes.insert(&account_id, &(current_stake + stake_amount));
+    }
+
+    pub fn validate_goal(&mut self, group_name: String, goal_owner: AccountId) {
+        let mut group = self.groups.get(&group_name).expect("Group not found");
+        let validator_id = env::predecessor_account_id();
+        
+        assert!(group.validators.contains(&validator_id), "Not a validator in this group");
+        
+        let mut goal = group.active_goals.get(&goal_owner).expect("Goal not found");
+        assert!(!goal.validators.contains(&validator_id), "Already validated this goal");
+        
+        goal.validators.push(validator_id);
+        goal.validations_received += 1;
+        
+        if goal.validations_received >= goal.validations_required {
+            goal.status = GoalStatus::Validated;
+            
+            // Move goal from active to completed
+            group.active_goals.remove(&goal_owner);
+            group.completed_goals.insert(&goal_owner, &goal);
+        } else {
+            group.active_goals.insert(&goal_owner, &goal);
+        }
+        
+        self.groups.insert(&group_name, &group);
+    }
+
+    pub fn mark_goal_completed(&mut self, group_name: String) {
+        let mut group = self.groups.get(&group_name).expect("Group not found");
+        let account_id = env::predecessor_account_id();
+        
+        let goal = group.active_goals.get(&account_id).expect("No active goal found");
+        assert!(goal.status == GoalStatus::Validated, "Goal must be validated first");
+        
+        group.active_goals.remove(&account_id);
+        group.completed_goals.insert(&account_id, &goal);
+        self.groups.insert(&group_name, &group);
+    }
+
+    pub fn check_expired_goals(&mut self, group_name: String) {
+        let mut group = self.groups.get(&group_name).expect("Group not found");
+        let current_time = env::block_timestamp();
+        
+        let mut expired_goals: Vec<(AccountId, Goal)> = Vec::new();
+        
+        for (account_id, goal) in group.active_goals.iter() {
+            if current_time > goal.deadline && goal.status != GoalStatus::Validated {
+                expired_goals.push((account_id.clone(), goal.clone()));
+            }
+        }
+        
+        for (account_id, mut goal) in expired_goals {
+            goal.status = GoalStatus::Failed;
+            group.active_goals.remove(&account_id);
+            group.failed_goals.insert(&account_id, &goal);
+        }
+        
+        self.groups.insert(&group_name, &group);
+    }
+
+    pub fn distribute_rewards(&mut self, group_name: String) {
+        let mut group = self.groups.get(&group_name).expect("Group not found");
+        
+        let total_failed_stakes: Balance = group.failed_goals.iter().map(|(_, goal)| goal.stake_amount).sum();
+        
+        if total_failed_stakes == 0 {
+            return;
+        }
+        
+        // Calculate distribution amounts
+        let platform_fee = total_failed_stakes * 10 / 100;  // 10% platform fee
+        let validator_reward = total_failed_stakes * 20 / 100;  // 20% to validators
+        let successful_reward = total_failed_stakes * 70 / 100;  // 70% to successful participants
+        
+        // Add platform fee
+        self.platform_fees += platform_fee;
+        
+        // Distribute to validators
+        let validator_count = group.validators.len() as u128;
+        if validator_count > 0 {
+            let reward_per_validator = validator_reward / validator_count;
+            for validator in &group.validators {
+                let current_stake = self.user_stakes.get(validator).unwrap_or(0);
+                self.user_stakes.insert(validator, &(current_stake + reward_per_validator));
+            }
+        }
+        
+        // Distribute to successful participants
+        let successful_count = group.completed_goals.len() as u128;
+        if successful_count > 0 {
+            let reward_per_successful = successful_reward / successful_count;
+            for (account_id, _) in group.completed_goals.iter() {
+                let current_stake = self.user_stakes.get(&account_id).unwrap_or(0);
+                self.user_stakes.insert(&account_id, &(current_stake + reward_per_successful));
+            }
+        }
+        
+        // Clear failed goals after distribution
+        for (account_id, _) in group.failed_goals.iter() {
+            let current_stake = self.user_stakes.get(&account_id).unwrap_or(0);
+            let goal_stake = group.failed_goals.get(&account_id).unwrap().stake_amount;
+            self.user_stakes.insert(&account_id, &(current_stake - goal_stake));
+        }
+        
+        group.failed_goals.clear();
+        self.groups.insert(&group_name, &group);
+    }
+
+    pub fn withdraw_stake(&mut self) -> Promise {
+        let account_id = env::predecessor_account_id();
+        let stake = self.user_stakes.get(&account_id).unwrap_or(0);
+        
+        assert!(stake > 0, "No stake to withdraw");
+        
+        self.user_stakes.insert(&account_id, &0);
+        Promise::new(account_id).transfer(stake)
+    }
+
+    // View methods
+    pub fn get_user_stake(&self, account_id: AccountId) -> Balance {
+        self.user_stakes.get(&account_id).unwrap_or(0)
+    }
+    
+    pub fn get_group(&self, group_name: String) -> Option<Group> {
+        self.groups.get(&group_name)
+    }
+    
+    pub fn get_platform_fees(&self) -> Balance {
+        self.platform_fees
+    }
 }
