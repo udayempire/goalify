@@ -1,11 +1,9 @@
-#![allow(unexpected_cfgs)] 
-#![allow(deprecated)]
 use anchor_lang::prelude::*;
 
-declare_id!("Bqp8qbntEFEK37Hou9MMsoWgPGzP99AS1NDq4EUjtxTs");
+declare_id!("8sgn8F6gPbJ1bdNYZf6FLdQ59DBUA389aEmHw785NQfT");
 
 #[program]
-pub mod anchor_program {
+pub mod goal_manager {
     use super::*;
 
     pub fn initialize(ctx: Context<Initialize>) -> Result<()> {

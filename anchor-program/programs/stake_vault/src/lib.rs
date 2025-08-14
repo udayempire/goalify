@@ -1,11 +1,9 @@
-#![allow(unexpected_cfgs)] 
-#![allow(deprecated)]
 use anchor_lang::prelude::*;
 
-declare_id!("Bqp8qbntEFEK37Hou9MMsoWgPGzP99AS1NDq4EUjtxTs");
+declare_id!("8iT2i4bqebs8BKq7Rc9rmWxBMquzmEwTrv1Nx3pU61Q7");
 
 #[program]
-pub mod anchor_program {
+pub mod stake_vault {
     use super::*;
 
     pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
