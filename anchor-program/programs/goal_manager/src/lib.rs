@@ -16,9 +16,12 @@ pub mod goal_manager {
 
     pub fn create_goal_sessions(
         ctx: Context<CreateGoalSession>,
-        params: CreateGoalParams
+        title:String,
+        description: String,
+        deadline: i64,
+        rules_url: String
     )-> Result<()>{
-        instruction::create_goal::handler(ctx,params)
+        create_goal_sessions::handler(ctx, title, description, deadline, rules_url)
     }
 
     pub fn join_goal(
