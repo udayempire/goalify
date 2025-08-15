@@ -1,14 +1,30 @@
+#[allow(unexpected_cfgs)]
+#[allow(deprecated)]
 use anchor_lang::prelude::*;
 
+
+pub mod instructions;
+pub mod state;
+pub mod errors;
+
+use instructions::*;
 declare_id!("8sgn8F6gPbJ1bdNYZf6FLdQ59DBUA389aEmHw785NQfT");
 
 #[program]
 pub mod goal_manager {
     use super::*;
 
-    pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
-        msg!("Greetings from: {:?}", ctx.program_id);
-        Ok(())
+    pub fn create_goal_sessions(
+        ctx: Context<CreateGoalSession>,
+        params: CreateGoalParams
+    )-> Result<()>{
+        instruction::create_goal::handler(ctx,params)
+    }
+
+    pub fn join_goal(
+        ctx: Context<JoinGoal>, stake_amount: u64
+    ) -> Result<()>{
+        instruction::join_goal::handler(ctx,params)
     }
 }
 
