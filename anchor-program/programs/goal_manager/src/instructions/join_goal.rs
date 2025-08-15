@@ -37,7 +37,7 @@ pub fn handler(ctx: Context<JoinGoal>, stake_amount: u64) -> Result<()> {
     );
 
     //Save participant info
-    let goalParticipant = &mut ctx.accounts.goal_participant;
+    let goal_participant = &mut ctx.accounts.goal_participant;
     goalParticipant.goal = goal.key(); //goal pda pubkey
     goalParticipant.participant = ctx.accounts.participant.key();
     goalParticipant.stake_amount = stake_amount;
