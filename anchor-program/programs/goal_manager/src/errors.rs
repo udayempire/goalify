@@ -7,4 +7,10 @@ pub enum GoalError{
     GoalNotOpen,
     #[msg("Stake amount overflow.")]
     StakeOverflow,
+    #[msg("Only the goal creator can update the status.")]
+    UnauthorizedStatusChange,
+    #[msg("Goal status is not pending.")]
+    InvalidStatusUpdate,
+    #[msg("Cannot distribute rewards unless goal is completed.")]
+    NotCompleted,
 }
