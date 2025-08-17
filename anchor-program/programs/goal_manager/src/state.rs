@@ -8,6 +8,7 @@ pub struct Goal{
     pub deadline: i64, 
     pub description: String, //short description
     pub stake_vault: PubKey, //PDA vault holding the staked tokens
+    pub stake_amount: u64,
     pub status: GoalStatus, 
     pub rules_uri: String, // offchain link to rules
     pub total_stake: u64 //total amount staked
@@ -25,7 +26,8 @@ impl Goal{
     + 32 // stake vault pubkey
     + 1 // status enum
     + 4 + Self::MAX_URI_LEN // rules_uri string
-    + 8; // total stake
+    + 8  // total stake
+    + 8; // stake_amount;
 }
 
 #[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq, Eq)]
@@ -37,7 +39,7 @@ pub enum GoalStatus{
 
 #[account]
 pub struct GoalParticipant {
-    pub goal: PubKey, // The Goal Acc this participant joined
+    pub goal: Pubkey, // The Goal Acc this participant joined
     pub participant: Pubkey,
     pub stake_amount: u64,
 }

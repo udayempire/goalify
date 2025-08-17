@@ -13,4 +13,6 @@ pub enum GoalError{
     InvalidStatusUpdate,
     #[msg("Cannot distribute rewards unless goal is completed.")]
     NotCompleted,
+    #[msg("Only creator can trigger distribution")]
+    Unauthorized
 }
