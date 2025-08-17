@@ -13,7 +13,6 @@ impl StakeVault {
 }
 
 #[account]
-
 pub struct UserStake {
     pub user: Pubkey,
     pub goal: Pubkey,

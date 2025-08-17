@@ -7,7 +7,7 @@ pub mod instructions;
 pub mod state;
 pub mod errors;
 
-use instructions::*;
+use instructions::* ;
 
 declare_id!("8iT2i4bqebs8BKq7Rc9rmWxBMquzmEwTrv1Nx3pU61Q7");
 
@@ -21,9 +21,9 @@ pub mod stake_vault {
     }
     pub fn stake_tokens(
         ctx: Context<StakeTokens>,
-        amount: u64 ) 
-        -> Result<()>{
-            stake_tokens::handler(ctx, amount)
+        amount: u64 
+    ) -> Result<()> {
+        stake_tokens::handler(ctx, amount)
     }
 
 }
