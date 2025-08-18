@@ -9,7 +9,7 @@ pub struct StakeTokens<'info> {
     #[account(mut)]
     pub stake_vault: Account<'info, StakeVault>,
 
-    /// Each user’s staking record
+    /// Each user's staking record
     #[account(
         init,
         payer = user,

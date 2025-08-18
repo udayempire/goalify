@@ -8,6 +8,7 @@ skip-lint = false
 [programs.localnet]
 anchor_program = "Bqp8qbntEFEK37Hou9MMsoWgPGzP99AS1NDq4EUjtxTs"
 goal_manager = "8sgn8F6gPbJ1bdNYZf6FLdQ59DBUA389aEmHw785NQfT"
+reward-token = "5i5RFgcDnaQa1gGFy5pW9S8XN9rhuX73NFgowTtwyqD6"
 stake_vault = "8iT2i4bqebs8BKq7Rc9rmWxBMquzmEwTrv1Nx3pU61Q7"
 
 [registry]

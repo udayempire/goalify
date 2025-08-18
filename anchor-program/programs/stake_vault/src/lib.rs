@@ -27,6 +27,3 @@ pub mod stake_vault {
     }
 
 }
-
-#[derive(Accounts)]
-pub struct Initialize {}
