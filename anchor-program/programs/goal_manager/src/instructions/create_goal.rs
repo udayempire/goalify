@@ -28,18 +28,18 @@ pub fn handler(
     description: String,
     deadline: i64,
     rules_uri: String,
-    stake_amount: u64,   // ✅ added
+    stake_amount: u64, 
 ) -> Result<()> {
     let goal = &mut ctx.accounts.goal;
     goal.creator = ctx.accounts.creator.key();
     goal.title = title;
     goal.description = description;
     goal.deadline = deadline;
-    goal.stake_vault = Pubkey::default(); // ✅ placeholder until StakeVault is wired in
+    goal.stake_vault = Pubkey::default(); //
     goal.status = GoalStatus::Pending;
     goal.rules_uri = rules_uri;
     goal.total_stake = 0;
-    goal.stake_amount = stake_amount; // ✅ new field
+    goal.stake_amount = stake_amount; 
 
     Ok(())
 }
