@@ -14,4 +14,8 @@ declare_id!("8sgn8F6gPbJ1bdNYZf6FLdQ59DBUA389aEmHw785NQfT");
 pub mod goal_manager {
     use super::*;
 
+    
+
 }
+#[derive(Accounts)]
+pub struct Initialize {}

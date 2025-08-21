@@ -1,16 +1,16 @@
 use anchor_lang::prelude::*;
 #[account]
 pub struct Goal{
-    creator: Pubkey,
-    title: String,
-    description: String,
-    rules_url: String,
-    stake_amount: u64,
-    start_date: i64,
-    end_date: i64,//unix timestamp
-    status: GoalStatus,
-    max_participants: u16,
-    vault_bump: u8
+    pub creator: Pubkey,
+    pub title: String,
+    pub description: String,
+    pub rules_url: String,
+    pub stake_amount: u64,
+    pub start_date: i64,
+    pub end_date: i64,//unix timestamp
+    pub status: GoalStatus,
+    pub max_participants: u16,
+    pub bump: u8
 }
 
 impl Goal {
@@ -36,4 +36,14 @@ pub enum GoalStatus{
     Ongoing, 
     Completed, 
     Cancelled
+}
+
+#[account]
+pub struct Vault {
+pub goal: Pubkey,
+pub bump: u8,
+}
+
+impl Vault { 
+    pub const SIZE: usize = 8 + 32 + 1; 
 }
