@@ -47,3 +47,18 @@ pub bump: u8,
 impl Vault { 
     pub const SIZE: usize = 8 + 32 + 1; 
 }
+#[account]
+pub struct Participants{
+    pub goal: Pubkey,
+    pub user: Pubkey,
+    pub joined_at: i64,
+    pub refunded: bool
+}
+
+impl Participants{
+    pub const SIZE: usize = 8 
+    +32 
+    +32
+    +8
+    +1;
+}

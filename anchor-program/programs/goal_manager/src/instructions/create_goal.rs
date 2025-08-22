@@ -1,5 +1,5 @@
 #![allow(unexpected_cfgs)]
-#[allow(deprecated)]
+#![allow(deprecated)]
 use anchor_lang::prelude::*;
 use anchor_lang::system_program::System;
 use crate::state::{Goal,GoalStatus,Vault};
