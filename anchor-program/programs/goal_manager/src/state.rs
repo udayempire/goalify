@@ -76,3 +76,11 @@ impl Participant{
     +1+1
     +8;
 }
+
+#[account]
+pub struct ProgramConfig {
+    pub admin: Pubkey,         // who can update settings
+    pub treasury: Pubkey,      // treasury account for fees
+    pub oracle_signer: Pubkey, // authority allowed to verify goals
+    pub paused: bool,          // is program paused?
+}

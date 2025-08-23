@@ -48,3 +48,25 @@ pub enum VerifyParticipantError{
     #[msg("Participant was already verified")]
     AlreadyVerified
 }
+#[error_code]
+pub enum FinalizeGoalError{
+    #[msg("Goal is currently paused for further operations due to unfortunate reasons")]
+    Paused,
+    #[msg("Goal must be ongoing in order to stop it")]
+    WrongStatus,
+    #[msg("Please let the goal over to finalize it")]
+    TooEarlyToFinalize,
+    #[msg("Participant must be from same goal")]
+    WrongGoal,
+    #[msg("Arithmetic overflow occurred")]
+    Overflow,
+    #[msg("Participant is not verified")]
+    UnverifiedParticipant,
+    #[msg("Participants are missing.")]
+    MissingParticipants
+}
+#[error_code]
+pub enum ClaimError {
+    #[msg("Rewards cant be distributed before goal is completed")]
+    GoalNotCompleted
+}
