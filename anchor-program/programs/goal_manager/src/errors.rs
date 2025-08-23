@@ -30,3 +30,21 @@ pub enum JoinGoalError {
     #[msg("The vault token account is not owned by the expected vault PDA authority.")]
     InvalidVaultOwner,
 }
+
+#[error_code]
+
+pub enum SubmitProofError {
+    #[msg("Goal must be ongoing")]
+    GoalNotOngoing,
+    #[msg("Only the participant can submit their own proof.")]
+    UnauthorizedSubmit
+}
+#[error_code]
+pub enum VerifyParticipantError{
+    #[msg("Only the goal creatoror designated authority can run this instruction only.")]
+    UnauthorizedAuthority,
+    #[msg("Proof not submitted by participant")]
+    ProofNotSubmitted,
+    #[msg("Participant was already verified")]
+    AlreadyVerified
+}
