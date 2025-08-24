@@ -1,3 +1,4 @@
+pub mod initalize_platform;
 pub mod create_goal;
 pub mod join_goal;
 pub mod submit_proof;
@@ -6,6 +7,7 @@ pub mod finalize_goal;
 pub mod claim;
 pub mod sweep_treasury;
 
+pub use initalize_platform::*;
 pub use create_goal::*;
 pub use join_goal::*;
 pub use submit_proof::*;

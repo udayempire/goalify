@@ -83,6 +83,7 @@ pub struct ProgramConfig {
     pub treasury: Pubkey,      // treasury account for fees
     pub oracle_signer: Pubkey, // authority allowed to verify goals
     pub paused: bool,          // is program paused?
+    pub bump: u8,
 }
 
 impl ProgramConfig {

@@ -12,6 +12,12 @@ declare_id!("8sgn8F6gPbJ1bdNYZf6FLdQ59DBUA389aEmHw785NQfT");
 #[program]
 pub mod goal_manager {
     use super::*;
+
+    pub fn initalize_platform(
+        ctx:Context<InitializePlatform>
+    )->Result<()>{
+        instructions::initalize_platform(ctx)
+    }
     pub fn create_goal_session(
         ctx:Context<CreateGoalSession>,
         title: String,
