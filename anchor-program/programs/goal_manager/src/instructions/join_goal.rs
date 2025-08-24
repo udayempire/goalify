@@ -41,7 +41,6 @@ pub struct JoinGoal<'info> {
 
 pub fn join_goal(
     ctx: Context<JoinGoal>,
-    // stake: u64,
     proof_uri: Option<String>,
     proof_submitted_at: Option<i64>,
 ) -> Result<()> {
