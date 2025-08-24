@@ -84,3 +84,11 @@ pub struct ProgramConfig {
     pub oracle_signer: Pubkey, // authority allowed to verify goals
     pub paused: bool,          // is program paused?
 }
+
+impl ProgramConfig {
+    pub const SIZE:usize = 8
+    +32
+    +32
+    +32
+    +1;
+}

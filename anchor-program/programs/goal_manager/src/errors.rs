@@ -70,3 +70,10 @@ pub enum ClaimError {
     #[msg("Rewards cant be distributed before goal is completed")]
     GoalNotCompleted
 }
+#[error_code]
+pub enum SweepTreasuryError {
+    #[msg("Can't process before the goal is completed")]
+    GoalNotCompleted,
+    #[msg("Vault is currently empty")]
+    VaultEmpty,
+}
