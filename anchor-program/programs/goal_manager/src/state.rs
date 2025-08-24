@@ -1,49 +1,94 @@
 use anchor_lang::prelude::*;
-
-
 #[account]
 pub struct Goal{
     pub creator: Pubkey,
     pub title: String,
-    pub deadline: i64, 
-    pub description: String, //short description
-    pub stake_vault: PubKey, //PDA vault holding the staked tokens
+    pub description: String,
+    pub rules_url: String,
     pub stake_amount: u64,
-    pub status: GoalStatus, 
-    pub rules_uri: String, // offchain link to rules
-    pub total_stake: u64 //total amount staked
+    pub stake_mint: Pubkey,
+    pub start_date: i64,
+    pub end_date: i64,//unix timestamp
+    pub status: GoalStatus,
+    pub max_participants: u16,
+    pub current_participants: u16,
+    pub bump: u8
 }
 
-impl Goal{
-    pub const MAX_TITLE_LEN: usize = 100;
-    pub const MAX_URI_LEN: usize = 200;
-    pub const MAX_DESCRIPTION_LEN: usize = 500;
-    pub const SIZE: usize = 8 //discriminator
-    + 32 //creator
-    + 4 + Self::MAX_TITLE_LEN // title string
-    + 4 + Self::MAX_DESCRIPTION_LEN 
-    + 8 // deadline
-    + 32 // stake vault pubkey
-    + 1 // status enum
-    + 4 + Self::MAX_URI_LEN // rules_uri string
-    + 8  // total stake
-    + 8; // stake_amount;
-}
+impl Goal {
+    pub const MAX_TITLE_LEN: usize = 64;
+    pub const MAX_DESCRIPTION: usize = 500;
+    pub const MAX_RULES_LEN: usize = 200;
 
-#[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq, Eq)]
+    pub const SIZE: usize = 8  // discriminator bytes
+        + 32                   // creator pubkey
+        + 4 + Self::MAX_TITLE_LEN
+        + 4 + Self::MAX_DESCRIPTION
+        + 4 + Self::MAX_RULES_LEN
+        + 8  // stake_amount
+        + 32 //stake mint
+        + 8  // start_date
+        + 8  // end_date
+        + 1  // status enum
+        + 2  // max_participants
+        + 2  // current_participants
+        + 1; // vault_bump
+}
+#[derive(AnchorSerialize, AnchorDeserialize,Clone,PartialEq, InitSpace)]
 pub enum GoalStatus{
-    Pending,
-    Completed,
-    Failed
+    Scheduled,  
+    Ongoing, 
+    Completed, 
+    Cancelled
 }
 
 #[account]
-pub struct GoalParticipant {
-    pub goal: Pubkey, // The Goal Acc this participant joined
-    pub participant: Pubkey,
-    pub stake_amount: u64,
+pub struct Vault {
+pub goal: Pubkey,
+pub bump: u8,
 }
 
-impl GoalParticipant {
-    pub const SIZE: usize = 8 + 32 + 32 + 8; // discriminator + 3 fields
+impl Vault { 
+    pub const SIZE: usize = 8 + 32 + 1; 
+}
+#[account]
+pub struct Participant{
+    pub goal: Pubkey,
+    pub user: Pubkey,
+    // pub stake: u64,
+    pub proof_uri: Option<String>,
+    pub proof_submitted_at: Option<i64>,
+    pub verified: Option<bool>,
+    pub claimed: Option<bool>,
+    pub joined_at: i64,
+}
+
+impl Participant{
+    pub const MAX_PROOF_URI_LENGTH: usize = 200;
+    pub const SIZE: usize = 8 
+    +32 
+    +32
+    // +4
+    +8
+    +1 + 4 + Self::MAX_PROOF_URI_LENGTH
+    +1+8 // tag+value
+    +1+1
+    +1+1
+    +8;
+}
+
+#[account]
+pub struct ProgramConfig {
+    pub admin: Pubkey,         // who can update settings
+    pub treasury: Pubkey,      // treasury account for fees
+    pub oracle_signer: Pubkey, // authority allowed to verify goals
+    pub paused: bool,          // is program paused?
+}
+
+impl ProgramConfig {
+    pub const SIZE:usize = 8
+    +32
+    +32
+    +32
+    +1;
 }
