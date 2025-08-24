@@ -41,7 +41,6 @@ pub fn claim(
 ) -> Result<()> {
     let goal = &mut ctx.accounts.goal;
     let participant = &mut ctx.accounts.participant;
-    let vault = &mut ctx.accounts.vault;
 
     // Only completed goals
     require!(
