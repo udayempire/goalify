@@ -13,7 +13,7 @@ pub struct VerifyParticipant<'info> {
     )]
     pub participant: Account<'info, Participant>,
     #[account(signer)]
-    pub verifier: AccountInfo<'info>,
+    pub verifier: Signer<'info>,
 }
 
 pub fn verify_participant(ctx: Context<VerifyParticipant>,is_verified: bool) -> Result<()> {
