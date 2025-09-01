@@ -7,7 +7,7 @@ use anchor_spl::token::{self, Mint, Token, TokenAccount, Transfer};
 #[derive(Accounts)]
 pub struct JoinGoal<'info> {
     #[account(mut)]
-    pub goal: Account<'info, Goal>,
+    pub goal: Box<Account<'info, Goal>>,
     #[account(mut, has_one = goal @ JoinGoalError::InvalidVault)]
     pub vault: Account<'info, Vault>,
     #[account(
@@ -17,7 +17,7 @@ pub struct JoinGoal<'info> {
         seeds = [b"participant", user.key().as_ref(),goal.key().as_ref() ],
         bump
     )]
-    pub participant: Account<'info, Participant>,
+    pub participant: Box<Account<'info, Participant>>,
     //spl token account
     //user-mint
     #[account(
@@ -41,7 +41,7 @@ pub struct JoinGoal<'info> {
 
 pub fn join_goal(
     ctx: Context<JoinGoal>,
-    proof_uri: Option<String>,
+    proof_uri: Option<Vec<u8>>,
     proof_submitted_at: Option<i64>,
 ) -> Result<()> {
     let goal = &mut ctx.accounts.goal;

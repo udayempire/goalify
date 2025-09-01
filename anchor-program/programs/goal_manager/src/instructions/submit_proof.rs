@@ -8,20 +8,20 @@ use crate::errors::SubmitProofError;
 #[derive(Accounts)]
 pub struct SubmitProof<'info>{
     #[account(mut)]
-    pub goal: Account<'info,Goal>,
+    pub goal: Box<Account<'info,Goal>>,
     #[account(
         mut,
         seeds = [b"participant", goal.key().as_ref(), user.key().as_ref()],
         bump,
         has_one = goal
     )]
-    pub participant: Account<'info,Participant>,
+    pub participant: Box<Account<'info,Participant>>,
     pub user: Signer<'info>,
 }
 
 pub fn submit_proof(
     ctx:Context<SubmitProof>,
-    proof_uri: Option<String>,
+    proof_uri: Option<Vec<u8>>,
 )->Result<()>{
     let goal =&mut ctx.accounts.goal;
     let participant = &mut ctx.accounts.participant;

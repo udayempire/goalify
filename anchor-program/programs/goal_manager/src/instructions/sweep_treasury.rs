@@ -13,7 +13,7 @@ pub struct SweepTreasury<'info> {
 
     //the completed goal
     #[account(mut)]
-    pub goal: Account<'info, Goal>,
+    pub goal: Box<Account<'info, Goal>>,
     #[account(mut)]
     pub creator: Signer<'info>,
 

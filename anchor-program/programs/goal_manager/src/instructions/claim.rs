@@ -13,10 +13,10 @@ use crate::state::Vault;
 pub struct Claim<'info> {
     /// The goal this participant belongs to
     #[account(mut)]
-    pub goal: Account<'info, Goal>,
+    pub goal: Box<Account<'info, Goal>>,
     /// The participant claiming rewards
     #[account(mut, has_one = user)]
-    pub participant: Account<'info, Participant>,
+    pub participant: Box<Account<'info, Participant>>,
     // Vault holding all stakes for this goal
     #[account(
         mut,

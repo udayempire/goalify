@@ -1,10 +1,11 @@
 use anchor_lang::prelude::*;
 #[account]
+// #[derive(InitSpace)]
 pub struct Goal{
     pub creator: Pubkey,
-    pub title: String,
-    pub description: String,
-    pub rules_url: String,
+    pub title: Vec<u8>,
+    pub description: Vec<u8>,
+    pub rules_url: Vec<u8>,
     pub stake_amount: u64,
     pub stake_mint: Pubkey,
     pub start_date: i64,
@@ -52,11 +53,12 @@ impl Vault {
     pub const SIZE: usize = 8 + 32 + 1; 
 }
 #[account]
+// #[derive(InitSpace)]
 pub struct Participant{
     pub goal: Pubkey,
     pub user: Pubkey,
     // pub stake: u64,
-    pub proof_uri: Option<String>,
+    pub proof_uri: Option<Vec<u8>>,
     pub proof_submitted_at: Option<i64>,
     pub verified: Option<bool>,
     pub claimed: Option<bool>,

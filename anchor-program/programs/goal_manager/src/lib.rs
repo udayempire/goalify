@@ -20,9 +20,9 @@ pub mod goal_manager {
     }
     pub fn create_goal_session(
         ctx:Context<CreateGoalSession>,
-        title: String,
-        description: String,
-        rules_url: String,
+        title: Vec<u8>,
+        description: Vec<u8>,
+        rules_url: Vec<u8>,
         start_date: i64,
         end_date: i64,
         status: state::GoalStatus,
@@ -32,14 +32,14 @@ pub mod goal_manager {
     }
     pub fn join_goal(
         ctx: Context<JoinGoal>,
-        proof_uri: Option<String>,
+        proof_uri: Option<Vec<u8>>,
         proof_submitted_at: Option<i64>,
     )->Result<()>{
         instructions::join_goal(ctx, proof_uri, proof_submitted_at)
     }
     pub fn submit_proof(
         ctx:Context<SubmitProof>,
-        proof_uri: Option<String>,
+        proof_uri: Option<Vec<u8>>,
     )->Result<()>{
         instructions::submit_proof(ctx, proof_uri)
     }

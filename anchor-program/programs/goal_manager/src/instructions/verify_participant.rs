@@ -6,12 +6,12 @@ use anchor_lang::prelude::*;
 
 #[derive(Accounts)]
 pub struct VerifyParticipant<'info> {
-    pub goal: Account<'info, Goal>,
+    pub goal: Box<Account<'info, Goal>>,
     #[account(
         mut,
         has_one= goal
     )]
-    pub participant: Account<'info, Participant>,
+    pub participant: Box<Account<'info, Participant>>,
     #[account(signer)]
     pub verifier: Signer<'info>,
 }

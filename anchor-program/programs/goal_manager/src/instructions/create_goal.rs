@@ -6,16 +6,16 @@ use crate::state::{Goal,GoalStatus,Vault};
 use crate::errors::GoalError;
 
 #[derive(Accounts)]
-#[instruction(title:String)]
+#[instruction(title:Vec<u8>)]
 pub struct CreateGoalSession<'info> {
     #[account(
         init,
         payer = creator,
         space = Goal::SIZE, // derived from states.rs
-        seeds = [b"goal", creator.key().as_ref(), title.as_bytes() , &Clock::get().unwrap().unix_timestamp.to_le_bytes()], 
+        seeds = [b"goal", creator.key().as_ref(), &title , &Clock::get().unwrap().unix_timestamp.to_le_bytes()], 
         bump
     )]
-    pub goal: Account<'info,Goal>,
+    pub goal: Box<Account<'info,Goal>>,
     #[account(
         init,
         payer = creator,
@@ -31,9 +31,9 @@ pub struct CreateGoalSession<'info> {
 
 pub fn create_goal_session(
     ctx: Context<CreateGoalSession>,
-    title: String,
-    description: String,
-    rules_url: String,
+    title: Vec<u8>,
+    description: Vec<u8>,
+    rules_url: Vec<u8>,
     start_date: i64,
     end_date: i64,
     status: GoalStatus,

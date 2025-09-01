@@ -11,9 +11,9 @@ pub struct FinalizeGoal<'info> {
     pub config: Account<'info, ProgramConfig>,
     /// The goal we are finalizing
     #[account(mut)]
-    pub goal: Account<'info, Goal>,
+    pub goal: Box<Account<'info, Goal>>,
     #[account(mut)]
-    pub participant: Account<'info, Participant>,
+    pub participant: Box<Account<'info, Participant>>,
     #[account(
         mut,
         seeds= [b"vault", goal.key().as_ref(), creator.key().as_ref()],
