@@ -36,8 +36,9 @@ pub fn create_goal_session(
     rules_url: Vec<u8>,
     start_date: i64,
     end_date: i64,
-    status: GoalStatus,
+    // status: GoalStatus,
     max_participants:u16,
+    stake_amount: u64,
 ) -> Result<()> {
     if max_participants == 0 {
         return Err(error!(GoalError::InvaildMinimumParticipants));
@@ -54,9 +55,10 @@ pub fn create_goal_session(
     goal.title = title;
     goal.description = description;
     goal.rules_url = rules_url;
-    goal.start_date = Clock::get()?.unix_timestamp;
+    goal.start_date = start_date;
     goal.end_date = end_date;
-    goal.status = status;
+    goal.stake_amount = stake_amount;
+    goal.status = GoalStatus::Scheduled;
     goal.max_participants = max_participants;
     goal.bump = ctx.bumps.goal;
     // Initialize vault header

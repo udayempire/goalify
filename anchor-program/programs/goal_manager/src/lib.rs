@@ -25,10 +25,10 @@ pub mod goal_manager {
         rules_url: Vec<u8>,
         start_date: i64,
         end_date: i64,
-        status: state::GoalStatus,
         max_participants:u16,
+        stake_amount: u64,
     )-> Result<()>{
-        instructions::create_goal_session(ctx,title, description,rules_url,start_date,end_date,status,max_participants)
+        instructions::create_goal_session(ctx,title, description,rules_url,start_date,end_date,max_participants,stake_amount)
     }
     pub fn join_goal(
         ctx: Context<JoinGoal>,
