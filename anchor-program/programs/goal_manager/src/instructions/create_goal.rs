@@ -6,13 +6,13 @@ use crate::state::{Goal,GoalStatus,Vault};
 use crate::errors::GoalError;
 
 #[derive(Accounts)]
-#[instruction(title:Vec<u8>,start_date:i64)]
+#[instruction(title:Vec<u8>,created_at:i64)]
 pub struct CreateGoalSession<'info> {
     #[account(
         init,
         payer = creator,
         space = Goal::SIZE, // derived from states.rs
-        seeds = [b"goal", creator.key().as_ref(), &title , &start_date.to_le_bytes()], 
+        seeds = [b"goal", creator.key().as_ref(), &title , &created_at.to_le_bytes()], 
         bump
     )]
     pub goal: Box<Account<'info,Goal>>,
@@ -57,6 +57,7 @@ pub fn create_goal_session(
     goal.rules_url = rules_url;
     goal.start_date = start_date;
     goal.end_date = end_date;
+    goal.created_at = Clock::get()?.unix_timestamp;
     goal.stake_amount = stake_amount;
     goal.status = GoalStatus::Scheduled;
     goal.max_participants = max_participants;

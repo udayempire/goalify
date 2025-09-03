@@ -10,6 +10,7 @@ pub struct Goal{
     pub stake_mint: Pubkey,
     pub start_date: i64,
     pub end_date: i64,//unix timestamp
+    pub created_at: i64,
     pub status: GoalStatus,
     pub max_participants: u16,
     pub current_participants: u16,

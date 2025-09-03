@@ -7,7 +7,7 @@ pub mod instructions;
 pub mod state;
 pub mod errors;
 
-declare_id!("8sgn8F6gPbJ1bdNYZf6FLdQ59DBUA389aEmHw785NQfT");
+declare_id!("2m8xFb2e3iUVEyVwvRW8cejbTcc8eZQR1fNxhtogMVEZ");
 
 #[program]
 pub mod goal_manager {

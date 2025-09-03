@@ -80,8 +80,8 @@ describe("goal_manager", async () => {
             max_participants,
             stake_amount
         )
-        .accounts({
-            goal: goalPda,
+        .accountsPartial({
+            // goal: goalPda,
             vault: vaultPda,
             creator: payer.publicKey,
             systemProgram: anchor.web3.SystemProgram.programId
@@ -94,14 +94,13 @@ describe("goal_manager", async () => {
             title
         );
         assert.equal(
-            Buffer.from(goalAccount.description).toString('utf8')replace(/\0/g,''),
+            Buffer.from(goalAccount.description).toString('utf8').replace(/\0/g,''),
             description
         );
         assert.equal(goalAccount.stakeAmount.toNumber(), 1000);
         assert.equal(goalAccount.maxParticipants, 100);
         assert.equal(goalAccount.creator.toString(), payer.publicKey.toString());
         assert.equal(goalAccount.endDate.toNumber(), end_date.toNumber());3
-        // The stored start_date should be the user-selected date, not the PDA creation time
         assert.equal(goalAccount.startDate.toNumber(), start_date.toNumber());
     });
 });
