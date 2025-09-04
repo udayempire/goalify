@@ -17,19 +17,18 @@ describe("goal_manager", async () => {
     let vaultBump: number;
     before(async () => {
         const title = "My Goal Title";
-        const createdAt = Math.floor(Date.now() / 1000);
-
+        const createdAt = new anchor.BN(Math.floor(Date.now() / 1000));
         //Generate GoalPDA
         const [goalPda, goalBump] = await anchor.web3.PublicKey.findProgramAddressSync(
             [
                 Buffer.from("goal"),
                 payer.publicKey.toBuffer(),
                 Buffer.from(title),
-                Buffer.from(createdAt.toString().padStart(8, '0'))
+                // createdAt.toArrayLike(Buffer, 'le', 8)
             ],
             program.programId
         );
-        const [vaultPda] = anchor.web3.PublicKey.findProgramAddressSync(
+        const [vaultPda, vaultBump] = anchor.web3.PublicKey.findProgramAddressSync(
             [
                 Buffer.from("vault"),
                 payer.publicKey.toBuffer(),
@@ -48,15 +47,15 @@ describe("goal_manager", async () => {
         const end_date = new anchor.BN(Math.floor(Date.now() / 1000) + 7200);
         const max_participants = 100;
 
-        const creationAt = new anchor.BN(Math.floor(Date.now() / 1000));
+        const createdAt = new anchor.BN(Math.floor(Date.now() / 1000));
 
         //generate goal pda
-        [goalPda, goalBump] = await anchor.web3.PublicKey.findProgramAddressSync(
+        [goalPda, goalBump] = anchor.web3.PublicKey.findProgramAddressSync(
             [
                 Buffer.from("goal"),
                 payer.publicKey.toBuffer(),
                 Buffer.from(title),
-                creationAt.toArrayLike(Buffer, 'le', 8)
+                // createdAt.toArrayLike(Buffer, 'le', 8)
             ],
             program.programId
         );
@@ -72,37 +71,39 @@ describe("goal_manager", async () => {
         );
 
         await program.methods.createGoalSession(
-            Buffer.from("title"),
-            Buffer.from("description"),
-            Buffer.from("rules_url"),
+            Buffer.from(title),
+            Buffer.from(description),
+            Buffer.from(rules_url),
             start_date,
             end_date,
             max_participants,
             stake_amount
         )
-        .accountsPartial({
-            // goal: goalPda,
-            vault: vaultPda,
-            creator: payer.publicKey,
-            systemProgram: anchor.web3.SystemProgram.programId
-        })
-        .rpc();
+            .accountsPartial({
+                goal: goalPda,
+                vault: vaultPda,
+                creator: payer.publicKey,
+                systemProgram: anchor.web3.SystemProgram.programId
+            })
+            .rpc();
         const goalAccount = await program.account.goal.fetch(goalPda);
         //converting buffers to string for comparison
         assert.equal(
-            Buffer.from(goalAccount.title).toString('utf8').replace(/\0/g,''),
+            Buffer.from(goalAccount.title).toString('utf8').replace(/\0/g, ''),
             title
         );
         assert.equal(
-            Buffer.from(goalAccount.description).toString('utf8').replace(/\0/g,''),
+            Buffer.from(goalAccount.description).toString('utf8').replace(/\0/g, ''),
             description
         );
         assert.equal(goalAccount.stakeAmount.toNumber(), 1000);
         assert.equal(goalAccount.maxParticipants, 100);
         assert.equal(goalAccount.creator.toString(), payer.publicKey.toString());
-        assert.equal(goalAccount.endDate.toNumber(), end_date.toNumber());3
+        assert.equal(goalAccount.endDate.toNumber(), end_date.toNumber());
         assert.equal(goalAccount.startDate.toNumber(), start_date.toNumber());
     });
 });
+
+//removed createdAt because it was giving different pdas and was not getting tested.
 
 
