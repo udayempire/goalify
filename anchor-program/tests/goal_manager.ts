@@ -15,16 +15,17 @@ describe("goal_manager", async () => {
     let goalBump: number;
     let vaultPda: anchor.web3.PublicKey;
     let vaultBump: number;
+    let createdAt: anchor.BN;
     before(async () => {
         const title = "My Goal Title";
-        const createdAt = new anchor.BN(Math.floor(Date.now() / 1000));
+        createdAt = new anchor.BN(Math.floor(Date.now() / 1000));
         //Generate GoalPDA
         const [goalPda, goalBump] = await anchor.web3.PublicKey.findProgramAddressSync(
             [
                 Buffer.from("goal"),
                 payer.publicKey.toBuffer(),
                 Buffer.from(title),
-                // createdAt.toArrayLike(Buffer, 'le', 8)
+                createdAt.toArrayLike(Buffer, 'le', 8)
             ],
             program.programId
         );
@@ -47,7 +48,7 @@ describe("goal_manager", async () => {
         const end_date = new anchor.BN(Math.floor(Date.now() / 1000) + 7200);
         const max_participants = 100;
 
-        const createdAt = new anchor.BN(Math.floor(Date.now() / 1000));
+        // const createdAt = new anchor.BN(Math.floor(Date.now() / 1000));
 
         //generate goal pda
         [goalPda, goalBump] = anchor.web3.PublicKey.findProgramAddressSync(
@@ -55,7 +56,7 @@ describe("goal_manager", async () => {
                 Buffer.from("goal"),
                 payer.publicKey.toBuffer(),
                 Buffer.from(title),
-                // createdAt.toArrayLike(Buffer, 'le', 8)
+                createdAt.toArrayLike(Buffer, 'le', 8)
             ],
             program.programId
         );
@@ -77,7 +78,8 @@ describe("goal_manager", async () => {
             start_date,
             end_date,
             max_participants,
-            stake_amount
+            stake_amount,
+            createdAt
         )
             .accountsPartial({
                 goal: goalPda,

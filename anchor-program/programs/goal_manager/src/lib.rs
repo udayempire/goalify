@@ -26,9 +26,10 @@ pub mod goal_manager {
         start_date: i64,
         end_date: i64,
         max_participants:u16,
+        created_at:i64,
         stake_amount: u64,
     )-> Result<()>{
-        instructions::create_goal_session(ctx,title, description,rules_url,start_date,end_date,max_participants,stake_amount)
+        instructions::create_goal_session(ctx,title, description,rules_url,start_date,end_date,created_at,max_participants,stake_amount)
     }
     pub fn join_goal(
         ctx: Context<JoinGoal>,

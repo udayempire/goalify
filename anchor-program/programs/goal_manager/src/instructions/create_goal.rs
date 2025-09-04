@@ -37,6 +37,7 @@ pub fn create_goal_session(
     start_date: i64,
     end_date: i64,
     // status: GoalStatus,
+    created_at:i64,
     max_participants:u16,
     stake_amount: u64,
 ) -> Result<()> {
@@ -57,7 +58,7 @@ pub fn create_goal_session(
     goal.rules_url = rules_url;
     goal.start_date = start_date;
     goal.end_date = end_date;
-    goal.created_at = Clock::get()?.unix_timestamp;
+    goal.created_at = created_at;
     goal.stake_amount = stake_amount;
     goal.status = GoalStatus::Scheduled;
     goal.max_participants = max_participants;
